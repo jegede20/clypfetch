@@ -173,3 +173,25 @@ export function GhostVideoIcon(p: P) {
     </svg>
   );
 }
+
+/** Sharp "info" mark (boxed i) — used for the How-it-works section. */
+export function InfoIcon(p: P) {
+  return (
+    <svg {...base(p)}>
+      <rect x={4} y={4} width={16} height={16} stroke="currentColor" strokeWidth={2} />
+      <path d="M12 11v5.5" stroke="currentColor" strokeWidth={2.2} strokeLinecap="square" />
+      <path d="M12 7.6v.2" stroke="currentColor" strokeWidth={2.6} strokeLinecap="square" />
+    </svg>
+  );
+}
+
+/** Settings — sliders with square knobs (sharp, no round gear). */
+export function SettingsIcon(p: P) {
+  return (
+    <svg {...base(p)}>
+      <path d="M3 8.5h18M3 15.5h18" stroke="currentColor" strokeWidth={2} strokeLinecap="square" />
+      <rect x={13} y={6} width={5} height={5} fill="currentColor" />
+      <rect x={6} y={13} width={5} height={5} fill="currentColor" />
+    </svg>
+  );
+}

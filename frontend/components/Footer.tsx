@@ -3,7 +3,7 @@ import { Logo } from "./Logo";
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t-2 border-[color:var(--edge)]">
+    <footer className="mt-24 border-t-2 border-[color:var(--edge)] pb-[calc(3rem+env(safe-area-inset-bottom))] md:pb-0">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-start sm:justify-between sm:px-6">
         <div className="flex max-w-md flex-col gap-3">
           <Logo size={24} />
