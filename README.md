@@ -87,19 +87,27 @@ Failures return a friendly `{ "error": "...", "message": "..." }` the UI renders
 
 ## Deploy
 
-### Backend → Render / Fly.io (Docker)
+This is a monorepo, so the two halves deploy to two hosts.
 
-The backend ships with a `Dockerfile` (python:3.12-slim + ffmpeg), `render.yaml`, and `fly.toml`.
+### Backend → Render (Docker Blueprint)
 
-- **Render:** New Web Service → point at `backend/` → it reads `render.yaml`. Set `ALLOWED_ORIGINS` to your Vercel URL.
-- **Fly.io:** `cd backend && fly launch` (uses `fly.toml`), then `fly deploy`.
+A **`render.yaml` at the repo root** describes the backend service (Docker runtime,
+health check, CORS env var). It points at `backend/` for the build context.
 
-Set the env var **`ALLOWED_ORIGINS`** to your frontend origin (e.g. `https://clypfetch.vercel.app`) to lock CORS down in production. It defaults to `*`.
+1. Render dashboard → **New + → Blueprint** → connect this GitHub repo → **Apply**.
+   Render reads the root `render.yaml` and provisions `clypfetch-api` on the free plan.
+2. When the first deploy finishes, copy the service URL (e.g. `https://clypfetch-api.onrender.com`).
+3. Once the frontend is live, set **`ALLOWED_ORIGINS`** to your exact Vercel origin to lock CORS down (it defaults to `*`).
+
+> Free instances sleep after ~15 min idle, so the first request after a lull cold-starts (~30–60s). The UI shows a loading state throughout — it won't error.
+
+The backend also ships a `backend/fly.toml` if you prefer Fly.io: `cd backend && fly launch --no-deploy`, then `fly deploy`.
 
 ### Frontend → Vercel
 
-1. Import `frontend/` into Vercel.
-2. Set env var **`NEXT_PUBLIC_API_BASE`** = your deployed backend URL (e.g. `https://clypfetch-api.onrender.com`).
+1. Import the repo into Vercel and set **Root Directory = `frontend`**.
+2. Set env var **`NEXT_PUBLIC_API_BASE`** = your Render backend URL (e.g. `https://clypfetch-api.onrender.com`).
+   Without it the app falls back to `localhost:8000` and every fetch fails on the live site.
 3. Deploy. `npm run build` is already validated clean.
 
 ---

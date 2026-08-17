@@ -1,0 +1,22 @@
+# Render Blueprint — deploys the Clypfetch backend (FastAPI + yt-dlp).
+#
+# This is a monorepo (frontend/ + backend/). Render's Blueprint auto-detection
+# reads render.yaml from the REPO ROOT, so it lives here and points at backend/.
+#
+# Deploy:  Render dashboard → New + → Blueprint → pick this repo → Apply.
+# The frontend is deployed separately on Vercel (Root Directory = frontend).
+services:
+  - type: web
+    name: clypfetch-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      # Start permissive so the frontend can call the API immediately.
+      # After the frontend is live on Vercel, set this to that exact origin
+      # (e.g. https://clypfetch.vercel.app) to lock CORS down in production.
+      - key: ALLOWED_ORIGINS
+        value: "*"
