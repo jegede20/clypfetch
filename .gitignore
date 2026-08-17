@@ -1,0 +1,28 @@
+# ---- Python / backend ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+backend/.venv/
+clypfetch_media/
+
+# ---- Node / frontend ----
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# ---- Env files ----
+.env
+.env.local
+.env*.local
+
+# ---- Deploy ----
+.vercel
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+*.log

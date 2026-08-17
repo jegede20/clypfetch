@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Clypfetch — "Pill Stack" (sharp-edge variant)
+  - Dark (ink) is the default look, not an alt mode.
+  - Semantic canvas/fg tokens let the Settings dark-mode toggle actually work.
+  - Cream "paper" surfaces stay cream in both themes so cards keep popping.
+*/
+:root {
+  --canvas: #14121a;   /* ink            */
+  --canvas-2: #211e29; /* soft panel     */
+  --canvas-3: #2a2733; /* raised panel   */
+  --fg: #fbf7f0;       /* cream text     */
+  --fg-dim: rgba(251, 247, 240, 0.64);
+  --fg-faint: rgba(251, 247, 240, 0.42);
+  --edge: rgba(251, 247, 240, 0.14);
+  --edge-strong: rgba(251, 247, 240, 0.24);
+  --canvas-glass: rgba(20, 18, 26, 0.82);
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  --canvas: #efe9dd;   /* warm light     */
+  --canvas-2: #fbf7f0;
+  --canvas-3: #ffffff;
+  --fg: #14121a;
+  --fg-dim: rgba(20, 18, 26, 0.62);
+  --fg-faint: rgba(20, 18, 26, 0.4);
+  --edge: rgba(20, 18, 26, 0.16);
+  --edge-strong: rgba(20, 18, 26, 0.28);
+  --canvas-glass: rgba(239, 233, 221, 0.82);
+  color-scheme: light;
+}
+
+* {
+  border-color: var(--edge);
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--fg);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+::selection {
+  background: #8b5cf6;
+  color: #fbf7f0;
+}
+
+/* Sharp-edge system: kill native rounding on controls. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  border-radius: 0;
+}
+
+/* Thin, on-brand scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: #6d3fe0;
+  border: 3px solid var(--canvas);
+}
+
+@layer components {
+  /* Marker highlight for hero word — angular + slight skew, not a soft pill. */
+  .marker {
+    position: relative;
+    white-space: nowrap;
+  }
+  .marker > span {
+    position: relative;
+    z-index: 1;
+  }
+  .marker::before {
+    content: "";
+    position: absolute;
+    left: -0.14em;
+    right: -0.14em;
+    top: 0.14em;
+    bottom: 0.04em;
+    background: var(--marker, #c8f169);
+    transform: skewX(-7deg) rotate(-1.2deg);
+    z-index: 0;
+  }
+
+  /* Faint diagonal hatch used behind hero / empty states. */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--edge) 0,
+      var(--edge) 1px,
+      transparent 1px,
+      transparent 9px
+    );
+  }
+}
+
+@layer utilities {
+  /* Clipped diagonal corner for the decorative hero accent blocks. */
+  .clip-corner {
+    clip-path: polygon(0 0, 100% 0, 100% 72%, 82% 100%, 0 100%);
+  }
+  .no-tap {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
